@@ -1,0 +1,33 @@
+{
+	"name": "@byondxr/eslint-plugin-automate",
+	"version": "0.1.9",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js"
+		}
+	},
+	"main": "./dist/index.js",
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsup src/index.cjs --format cjs",
+		"dev": "tsup src/index.ts --format esm,cjs --watch & eslint-flat-config-viewer",
+		"clean": "rimraf dist",
+		"lint": "pnpm run stub && eslint .",
+		"prepack": "pnpm clean && pnpm build",
+		"test": "vitest --run --coverage",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@typescript-eslint/utils": "^6.11.0",
+		"tsutils": "^3.21.0"
+	},
+	"devDependencies": {
+		"@typescript-eslint/rule-tester": "^6.7.3"
+	}
+}

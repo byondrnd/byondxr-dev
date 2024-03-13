@@ -1,0 +1,8 @@
+node_modules
+coverage
+.idea
+yarn-error.log
+dist
+coverage
+*.backup
+temp

@@ -1,0 +1,13 @@
+{
+	"extends": ["../.eslintrc.json"],
+	"ignorePatterns": ["!**/*"],
+	"plugins": ["@byondxr/automate"],
+	"overrides": [
+		{
+			"files": ["*.tsx"],
+			"rules": {
+				"@byondxr/automate/recoil-add-key": "error"
+			}
+		}
+	]
+}

@@ -1,0 +1,33 @@
+{
+	"name": "@byondxr/react-utils",
+	"version": "0.1.7",
+	"main": "./src/index.tsx",
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsup src --dts  --sourcemap",
+		"build:fast": "tsup src",
+		"dev": "pnpm build:fast -- --watch",
+		"clean": "rimraf dist",
+		"typecheck": "tsc --noEmit",
+		"prepack": "pnpm clean && pnpm build && clean-package",
+		"postpack": "clean-package restore"
+	},
+	"clean-package": "../../clean-package.config.json",
+	"devDependencies": {
+		"@types/react": "^18.2.37",
+		"react": "^18.2.0",
+		"react-use": "^17.4.0"
+	},
+	"peerDependencies": {
+		"react": ">=18",
+		"react-use": ">=17.4.0"
+	},
+	"dependencies": {
+		"@byondxr/utils": "workspace:^"
+	}
+}

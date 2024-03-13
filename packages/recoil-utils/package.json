@@ -1,0 +1,45 @@
+{
+	"name": "@byondxr/recoil-utils",
+	"version": "0.1.11",
+	"main": "./src/index.ts",
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsup src --dts  --sourcemap",
+		"build:fast": "tsup src",
+		"dev": "pnpm build:fast -- --watch",
+		"test": "vitest --run --coverage",
+		"clean": "rimraf dist",
+		"typecheck": "tsc --noEmit",
+		"prepack": "pnpm clean && pnpm build && clean-package",
+		"postpack": "clean-package restore"
+	},
+	"clean-package": "../../clean-package.config.json",
+	"devDependencies": {
+		"@types/react": "^18.2.37",
+		"@types/uuid": "^9.0.7",
+		"immer": "^10.0.3",
+		"react": "^18.2.0",
+		"react-use": "^17.4.0",
+		"recoil": "^0.7.7",
+		"uuid": "^9.0.1",
+		"zustand": "^4.4.6",
+		"@byondxr/eslint-plugin-automate": "workspace:^"
+	},
+	"peerDependencies": {
+		"immer": ">=10.0.3",
+		"react": ">=18.2.0",
+		"react-use": ">=17.4.0",
+		"recoil": ">=0.7.7",
+		"uuid": ">=9.0.1",
+		"zustand": ">=4.4.6"
+	},
+	"dependencies": {
+		"@byondxr/react-utils": "workspace:^",
+		"@byondxr/utils": "workspace:^"
+	}
+}

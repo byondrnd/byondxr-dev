@@ -1,0 +1,34 @@
+{
+	"name": "@byondxr/react-recoil-utils",
+	"version": "0.1.6",
+	"main": "./src/index.ts",
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "tsup src --dts  --sourcemap",
+		"build:fast": "tsup src",
+		"dev": "pnpm build:fast -- --watch",
+		"clean": "rimraf dist",
+		"typecheck": "tsc --noEmit",
+		"prepack": "pnpm clean && pnpm build && clean-package",
+		"postpack": "clean-package restore"
+	},
+	"clean-package": "../../clean-package.config.json",
+	"devDependencies": {
+		"@types/react": "^18.2.37",
+		"react": "^18.2.0",
+		"recoil": "^0.7.7"
+	},
+	"peerDependencies": {
+		"react": ">=18",
+		"recoil": ">=0.7.7"
+	},
+	"dependencies": {
+		"@byondxr/react-utils": "workspace:^",
+		"@byondxr/recoil-utils": "workspace:^"
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"name": "@byondxr/utils",
+	"version": "0.1.6",
+	"main": "./src/index.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup src --dts  --sourcemap",
+		"build:fast": "tsup src",
+		"dev": "pnpm build:fast -- --watch",
+		"clean": "rimraf dist",
+		"typecheck": "tsc --noEmit",
+		"prepack": "pnpm clean && pnpm build && clean-package",
+		"postpack": "clean-package restore"
+	},
+	"clean-package": "../../clean-package.config.json"
+}

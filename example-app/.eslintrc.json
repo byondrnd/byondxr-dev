@@ -1,0 +1,71 @@
+{
+	"extends": ["../.eslintrc.json"],
+	"ignorePatterns": ["!**/*"],
+	"plugins": ["@byondxr/automate"],
+	"overrides": [
+		{
+			"files": ["*.ts"],
+			"rules": {
+				"@byondxr/automate/no-react-hooks": "error"
+			}
+		},
+		{
+			"files": ["*.ts", "*.tsx"],
+			"rules": {
+				"@byondxr/automate/imports-spacing": "error"
+			}
+		},
+		{
+			"files": ["*.tsx"],
+			"rules": {
+				"@byondxr/automate/generate-react-component": "error",
+				"react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "never" }],
+				"@byondxr/automate/recoil-gen-template": "error",
+				"@byondxr/automate/recoil-add-key": "error",
+				"@byondxr/automate/control-recoil-value-usage": "error",
+				"@byondxr/automate/react-wrap-jsx-callback": [
+					"error",
+					{
+						"wrap": {
+							"wrapName": "r",
+							"importName": "useInlineHandler",
+							"importSource": "@byondxr/react-utils"
+						}
+					}
+				],
+				"@byondxr/automate/react-wrap": [
+					"error",
+					{
+						"emptyLineBeforeReturn": true,
+						"addDataComponent": true,
+						"banDisableDepsEslint": "(useAsync|useUpdateEffect|useShallowCompareEffect|useRecoilMemoSelector|useRecoilEffect|useRecoilMemoParamSelector)",
+						"wrapHandler": {
+							"wrapName": "useHandler",
+							"importSource": "@byondxr/react-utils",
+							"replaces": "(effectDep)"
+						},
+						"wrapMemo": {
+							"wrapName": "memo",
+							"importSource": "@byondxr/react-utils"
+						},
+						"wrapUseMemo": {
+							"wrapName": "useMemo",
+							"importSource": "react"
+						}
+					}
+				],
+				"@byondxr/automate/exhaustive-deps": [
+					"error",
+					{
+						"hooksToIncludeAllDependencies": "(useRecoilMemoSelector|useRecoilMemoParamSelector|useRecoilMemoValue)",
+						"enableDangerousAutofixThisMayCauseInfiniteLoops": true,
+						"useEffectRemoveUnnecessaryDependencies": true,
+						"useEffectDisregardFunctions": true,
+						"additionalHooks": "(useAsync|useUpdateEffect|useShallowCompareEffect|useRecoilMemoSelector|useRecoilEffect|useRecoilMemoParamSelector|useRecoilMemoValue)",
+						"additionalStableHandlers": "(useLatest|useHandler|useConst|useRecoilAtom|useRecoilLocalAtom|useSignal)"
+					}
+				]
+			}
+		}
+	]
+}

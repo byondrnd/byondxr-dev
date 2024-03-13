@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "Bundler",
+		"useDefineForClassFields": true,
+		"allowImportingTsExtensions": true,
+		"downlevelIteration": true,
+		"declaration": true,
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"lib": ["dom", "DOM.Iterable", "esnext"],
+		"isolatedModules": true,
+		"noEmit": true,
+		"target": "esnext",
+		"module": "esnext",
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"baseUrl": ".",
+		"types": ["vitest/globals"]
+	},
+	"include": ["**/*.ts*"],
+	"exclude": ["**/node_modules"]
+}
