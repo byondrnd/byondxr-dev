@@ -176,9 +176,6 @@ importers:
         specifier: ^3.21.0
         version: 3.21.0(typescript@5.4.5)
     devDependencies:
-      '@byondxr/eslint-plugin-automate':
-        specifier: workspace:^
-        version: 'link:'
       '@typescript-eslint/rule-tester':
         specifier: ^6.7.3
         version: 6.21.0(@eslint/eslintrc@3.0.2)(eslint@8.57.0)(typescript@5.4.5)
