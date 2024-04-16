@@ -1,6 +1,6 @@
 {
 	"name": "@byondxr/eslint-plugin-automate",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
@@ -29,7 +29,7 @@
 		"tsutils": "^3.21.0"
 	},
 	"devDependencies": {
-		"@byondxr/eslint-plugin-automate": "workspace:^0.1.9",
+		"@byondxr/eslint-plugin-automate": "workspace:^0.1.10",
 		"@typescript-eslint/rule-tester": "^6.7.3"
 	}
 }
