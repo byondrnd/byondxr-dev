@@ -1,6 +1,6 @@
 {
-	"name": "@byondxr/eslint-plugin-automate",
-	"version": "0.1.9",
+	"name": "@byondxr/babel-plugin",
+	"version": "0.0.1",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
@@ -15,21 +15,21 @@
 		"access": "public"
 	},
 	"scripts": {
-		"build": "tsup src/index.cjs --format cjs",
+		"build": "tsup src/index.ts --format cjs",
 		"dev": "fswatch src | (while read; do pnpm build; done)",
-		"dev1": "tsup src/index.ts --format cjs --watch",
 		"clean": "rimraf dist",
 		"lint": "pnpm run stub && eslint .",
 		"prepack": "pnpm clean && pnpm build",
 		"test": "vitest --run --coverage",
 		"typecheck": "tsc --noEmit"
 	},
-	"dependencies": {
-		"@typescript-eslint/utils": "^6.11.0",
-		"tsutils": "^3.21.0"
-	},
 	"devDependencies": {
-		"@typescript-eslint/rule-tester": "^6.7.3",
-		"@byondxr/eslint-plugin-automate": "workspace:^"
+		"@babel/core": "7.24.0",
+		"@babel/helper-module-imports": "^7.24.3",
+		"@babel/traverse": "^7.24.1",
+		"@babel/types": "7.24.0",
+		"@types/babel__core": "^7.20.5",
+		"@types/babel__helper-module-imports": "^7.18.3",
+		"@types/babel__traverse": "^7.20.5"
 	}
 }
