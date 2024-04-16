@@ -1,5 +1,13 @@
 # @byondxr/zustand-utils
 
+## 0.1.11
+
+### Patch Changes
+
+- b50f87d: babel-plugin
+- Updated dependencies [b50f87d]
+  - @byondxr/recoil-utils@0.1.13
+
 ## 0.1.10
 
 ### Patch Changes
