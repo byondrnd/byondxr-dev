@@ -1,5 +1,5 @@
 {
-	"name": "example-app",
+	"name": "@byondxr/example-app",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -10,15 +10,14 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@byondxr/react-utils": "^0.1.7",
-		"@byondxr/recoil-utils": "^0.1.12",
+		"@byondxr/react-utils": "workspace:^",
+		"@byondxr/recoil-utils": "workspace:^",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"recoil": "^0.7.7"
 	},
 	"devDependencies": {
 		"@byondxr/babel-plugin": "workspace:^",
-		"@byondxr/eslint-plugin-automate": "^0.1.10",
 		"@types/react": "^18.2.43",
 		"@types/react-dom": "^18.2.17",
 		"@vitejs/plugin-react": "^4.2.1",
