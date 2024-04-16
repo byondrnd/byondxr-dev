@@ -22,7 +22,7 @@
 	},
 	"scripts": {
 		"build": "pnpm -r build",
-		"lint": "eslint packages/**/src --ext .ts,.tsx --cache",
+		"lint": "eslint packages/*/src --ext .ts,.tsx --cache",
 		"format:check": "prettier --check packages/**/**/src --cache",
 		"format:write": "prettier --write packages/**/**/src --cache",
 		"typecheck": "tsc --noEmit",

@@ -22,7 +22,7 @@ const App = () => {
 		return () => {
 			clearTimeout(tm)
 		}
-	}, [setVAtom])
+	}, [])
 
 	useRecoilEffect(
 		async ({ getAsync }) => {

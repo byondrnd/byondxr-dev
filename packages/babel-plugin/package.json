@@ -18,7 +18,7 @@
 		"build": "tsup src/index.ts --format cjs",
 		"dev": "fswatch src | (while read; do pnpm build; done)",
 		"clean": "rimraf dist",
-		"lint": "pnpm run stub && eslint .",
+		"lint": "eslint .",
 		"prepack": "pnpm clean && pnpm build",
 		"test": "vitest --run --coverage",
 		"typecheck": "tsc --noEmit"
