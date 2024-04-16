@@ -17,7 +17,7 @@
 		"recoil": "^0.7.7"
 	},
 	"devDependencies": {
-		"@byondxr/babel-plugin": "workspace:^",
+		"@byondxr/babel-plugin": "^0.0.2",
 		"@byondxr/eslint-plugin-automate": "^0.1.10",
 		"@types/react": "^18.2.43",
 		"@types/react-dom": "^18.2.17",
