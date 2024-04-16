@@ -44,10 +44,6 @@
 							"importSource": "@byondxr/react-utils",
 							"replaces": "(effectDep)"
 						},
-						"wrapMemo": {
-							"wrapName": "memo",
-							"importSource": "@byondxr/react-utils"
-						},
 						"wrapUseMemo": {
 							"wrapName": "useMemo",
 							"importSource": "react"

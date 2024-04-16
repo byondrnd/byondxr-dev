@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-import { memo } from '@byondxr/react-utils'
-import { useRecoilLocalAtom, useRecoilEffect } from '../../packages/recoil-utils'
+import { useRecoilLocalAtom, useRecoilEffect } from '@byondxr/recoil-utils'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './app.css'
 
-const App = memo(() => {
+const App = () => {
 	const [count, setCount] = useState(0)
 
 	const [vAtom, setVAtom] = useRecoilLocalAtom('', 'app:App:vAtom')
@@ -14,7 +13,7 @@ const App = memo(() => {
 		console.log('useEffect')
 		let tm = setTimeout(() => {
 			console.log('setVAtom(v + 1)')
-			setVAtom((v) => v + 1)
+			setVAtom((v) => v + 2)
 			setTimeout(() => {
 				console.log('setVAtom(v + 2)')
 				setVAtom((v) => v + 2)
@@ -39,7 +38,7 @@ const App = memo(() => {
 
 	return (
 		<>
-			<div>
+			<div data-component="aaaaaa">
 				<a href="https://vitejs.dev" target="_blank" rel="noreferrer">
 					<img src={viteLogo} className="logo" alt="Vite logo" />
 				</a>
@@ -57,7 +56,8 @@ const App = memo(() => {
 			<p className="read-the-docs">Click on the Vite and React logos to learn more</p>
 		</>
 	)
-})
-App.displayName = 'App'
+}
 
 export default App
+
+export const BBB = () => {}

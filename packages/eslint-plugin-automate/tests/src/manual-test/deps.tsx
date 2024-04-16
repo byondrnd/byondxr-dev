@@ -40,7 +40,6 @@ export const B = memo((props: { fnUndefined: null | undefined | (() => void) }) 
 	useEffect(() => {
 		console.log('', objectFn.fn)
 	}, [objectFn.fn])
-
 	return undefined
 })
 B.displayName = 'B'

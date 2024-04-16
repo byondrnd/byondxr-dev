@@ -27,8 +27,7 @@
 		"react-use": "^17.4.0",
 		"recoil": "^0.7.7",
 		"uuid": "^9.0.1",
-		"zustand": "^4.4.6",
-		"@byondxr/eslint-plugin-automate": "workspace:^"
+		"zustand": "^4.4.6"
 	},
 	"peerDependencies": {
 		"immer": ">=10.0.3",
