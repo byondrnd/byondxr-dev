@@ -5,12 +5,12 @@ runs:
   using: composite
   steps:
     - name: Install dependencies
-      uses: pnpm/action-setup@v3.0.0
+      uses: pnpm/action-setup@v2.2.4
       with:
-        version: 9
+        version: 8
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4.0.2
+      uses: actions/setup-node@v3
       with:
         node-version-file: '.nvmrc'
         registry-url: 'https://registry.npmjs.org'
