@@ -29,7 +29,7 @@
 		"tsutils": "^3.21.0"
 	},
 	"devDependencies": {
-		"@byondxr/eslint-plugin-automate": "workspace:^0.1.9",
+		"@byondxr/eslint-plugin-automate": "workspace:^",
 		"@typescript-eslint/rule-tester": "^6.7.3"
 	}
 }
