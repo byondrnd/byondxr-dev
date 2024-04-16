@@ -161,9 +161,6 @@ importers:
       '@byondxr/babel-plugin':
         specifier: workspace:^
         version: link:../babel-plugin
-      '@byondxr/eslint-plugin-automate':
-        specifier: workspace:^
-        version: link:../eslint-plugin-automate
       '@types/react':
         specifier: ^18.2.43
         version: 18.2.76
