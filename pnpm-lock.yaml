@@ -166,9 +166,6 @@ importers:
       '@types/babel__traverse':
         specifier: ^7.20.5
         version: 7.20.5
-      core:
-        specifier: link:@types/@babel/core
-        version: link:@types/@babel/core
 
   packages/eslint-plugin-automate:
     dependencies:
