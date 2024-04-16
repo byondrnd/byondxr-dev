@@ -1,5 +1,5 @@
 {
-	"name": "example-app",
+	"name": "@byondxr/example-app",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -18,7 +18,6 @@
 	},
 	"devDependencies": {
 		"@byondxr/babel-plugin": "workspace:^",
-		"@byondxr/eslint-plugin-automate": "workspace:^",
 		"@types/react": "^18.2.43",
 		"@types/react-dom": "^18.2.17",
 		"@vitejs/plugin-react": "^4.2.1",
