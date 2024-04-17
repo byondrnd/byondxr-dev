@@ -3,11 +3,10 @@
 	"version": "0.0.3",
 	"exports": {
 		".": {
-			"import": "./dist/index.js",
-			"require": "./dist/index.js"
+			"default": "./dist/index.js"
 		}
 	},
-	"main": "./dist/index.js",
+	"main": "dist/index.js",
 	"files": [
 		"dist"
 	],
@@ -23,13 +22,15 @@
 		"test": "vitest --run --coverage",
 		"typecheck": "tsc --noEmit"
 	},
-	"devDependencies": {
-		"@babel/core": "7.24.0",
+	"dependencies": {
 		"@babel/helper-module-imports": "^7.24.3",
-		"@babel/traverse": "^7.24.1",
+		"@babel/traverse": "^7.24.1"
+	},
+	"devDependencies": {
 		"@babel/types": "7.24.0",
 		"@types/babel__core": "^7.20.5",
 		"@types/babel__helper-module-imports": "^7.18.3",
-		"@types/babel__traverse": "^7.20.5"
+		"@types/babel__traverse": "^7.20.5",
+		"@babel/core": "7.24.0"
 	}
 }

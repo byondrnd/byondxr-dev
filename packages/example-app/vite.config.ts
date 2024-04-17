@@ -19,8 +19,7 @@ export default defineConfig({
 					],
 				],
 			},
-			include: [/.\/src\/.+\.tsx?$/],
-			exclude: [/.\/packages\/.+\.tsx?$/],
+			include: [/.\/packages\/example-app\/src\/.+\.tsx?$/],
 		}),
 	],
 })
