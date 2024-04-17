@@ -7,33 +7,54 @@ type Import = {
 	importSource: string
 }
 export type Options = PluginPass & {
-	opts: {
-		componentWrappers: {
+	opts?: {
+		componentWrappers?: {
 			observer?: Import
 			memo?: Import
 		}
 	}
 	actualImports: Map<string, string>
+	componentName: string
 }
 
 export const isComponent = (str: string) => {
 	return /^[A-Z]/.test(str)
 }
 
-const plugin = (): PluginObj<Options> => {
-	return {
-		pre(file) {
-			this.actualImports = new Map()
+const jsxVisitor: PluginObj<Options> = {
+	visitor: {
+		JSXElement(p, state) {
+			const openingElement = p.get('openingElement')
+			if (openingElement.isJSXOpeningElement()) {
+				const existingAttribute = openingElement.node.attributes
+					.filter((attr): attr is t.JSXAttribute => t.isJSXAttribute(attr))
+					.find((attr) => t.isJSXAttribute(attr) && attr.name.name === 'data-component')
+
+				if (existingAttribute) {
+					existingAttribute.value = t.stringLiteral(state.componentName)
+				} else {
+					openingElement.node.attributes.push(
+						t.jsxAttribute(t.jsxIdentifier('data-component'), t.stringLiteral(state.componentName))
+					)
+				}
+
+				p.stop()
+			}
 		},
-		visitor: {
-			VariableDeclaration(p, state) {
-				p.skip()
-				const declarations = p.get('declarations')
-				const declarator = declarations[0]
-				if (declarator) {
-					const init = declarator.get('init')
-					if (init.isArrowFunctionExpression()) {
-						if (t.isIdentifier(declarator.node.id) && isComponent(declarator.node.id.name)) {
+	},
+}
+
+const componentVisitor: PluginObj<Options> = {
+	visitor: {
+		VariableDeclaration(p, state) {
+			const declarations = p.get('declarations')
+			const declarator = declarations[0]
+			if (declarator) {
+				const init = declarator.get('init')
+				if (init.isArrowFunctionExpression()) {
+					if (t.isIdentifier(declarator.node.id)) {
+						const componentName = declarator.node.id.name
+						if (isComponent(componentName)) {
 							const wrap = ({ importName, importSource }: Import) => {
 								let actualImport = state.actualImports.get(importName)
 								if (!actualImport) {
@@ -43,53 +64,36 @@ const plugin = (): PluginObj<Options> => {
 								init.replaceWith(t.callExpression(t.identifier(actualImport), [init.node]))
 							}
 							// probably important first to wrap with observer
-							state.opts.componentWrappers.observer && wrap(state.opts.componentWrappers.observer)
-							state.opts.componentWrappers.memo && wrap(state.opts.componentWrappers.memo)
+							state.opts?.componentWrappers?.observer && wrap(state.opts.componentWrappers.observer)
+							state.opts?.componentWrappers?.memo && wrap(state.opts.componentWrappers.memo)
 							p.insertAfter(
 								t.expressionStatement(
 									t.assignmentExpression(
 										'=',
-										t.memberExpression(
-											t.identifier(declarator.node.id.name),
-											t.identifier('displayName')
-										),
-										t.stringLiteral(declarator.node.id.name)
+										t.memberExpression(t.identifier(componentName), t.identifier('displayName')),
+										t.stringLiteral(componentName)
 									)
 								)
 							)
 
-							// Add data-component attribute to the first JSX element
-							const componentName = declarator.node.id.name
-							init.traverse({
-								JSXElement(path) {
-									const openingElement = path.get('openingElement')
-									if (openingElement.isJSXOpeningElement()) {
-										const existingAttribute = openingElement.node.attributes
-											.filter((attr): attr is t.JSXAttribute => t.isJSXAttribute(attr))
-											.find(
-												(attr) => t.isJSXAttribute(attr) && attr.name.name === 'data-component'
-											)
-
-										if (existingAttribute) {
-											// Update the existing attribute value
-											existingAttribute.value = t.stringLiteral(componentName)
-										} else {
-											// Add a new attribute
-											openingElement.node.attributes.push(
-												t.jsxAttribute(
-													t.jsxIdentifier('data-component'),
-													t.stringLiteral(componentName)
-												)
-											)
-										}
-
-										path.stop() // Stop traversal after the first JSX element
-									}
-								},
-							})
+							init.traverse(jsxVisitor.visitor, { ...state, componentName })
 						}
 					}
 				}
+			}
+			p.skip()
+		},
+	},
+}
+
+const plugin = (): PluginObj<Options> => {
+	return {
+		pre(file) {
+			this.actualImports = new Map()
+		},
+		visitor: {
+			Program(p, state) {
+				p.traverse<Options>(componentVisitor.visitor, state)
 			},
 		},
 		post(file) {
@@ -100,8 +104,11 @@ const plugin = (): PluginObj<Options> => {
 
 /**
  * next:
- * deploy
+ * check what about these libs along side in js
+ *
  * check the monorepo for children
+ * add line numbers to the console.log
+ * exclude wrap with a comment
  */
 
 export default plugin
