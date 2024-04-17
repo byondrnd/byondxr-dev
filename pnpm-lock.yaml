@@ -104,16 +104,17 @@ importers:
         version: 17.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
   packages/babel-plugin:
-    devDependencies:
-      '@babel/core':
-        specifier: 7.24.0
-        version: 7.24.0
+    dependencies:
       '@babel/helper-module-imports':
         specifier: ^7.24.3
         version: 7.24.3
       '@babel/traverse':
         specifier: ^7.24.1
         version: 7.24.1
+    devDependencies:
+      '@babel/core':
+        specifier: 7.24.0
+        version: 7.24.0
       '@babel/types':
         specifier: 7.24.0
         version: 7.24.0
