@@ -243,7 +243,7 @@ const plugin = (): PluginObj<Options> => {
 						console.log('babel finished')
 						logFinished = true
 						writeLog()
-					}, 5000)
+					}, 10000)
 				}
 			}
 			// console.log(file.path.toString().replaceAll('\t', '  '))
