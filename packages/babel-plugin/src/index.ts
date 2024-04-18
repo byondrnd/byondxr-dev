@@ -36,7 +36,7 @@ const log = {
 	dataComponentWrites: 0,
 	observerWraps: 0,
 	memoWraps: 0,
-	componentsWithChildren: 0,
+	foundComponentsWithChildren: 0,
 }
 
 const jsxVisitor: PluginObj<Options> = {
@@ -50,7 +50,6 @@ const jsxVisitor: PluginObj<Options> = {
 					disregard = true
 				}
 
-				console.log({ elementName: elementName }, isDomElement(elementName))
 				if (!isDomElement(elementName)) {
 					let importSpecifier = p.scope.getBinding(elementName)?.path
 					if (importSpecifier?.isImportSpecifier() || importSpecifier?.isImportDefaultSpecifier()) {
@@ -141,25 +140,30 @@ const componentVisitor: PluginObj<Options> = {
 									replaceNode = init as NodePath<t.CallExpression>
 								}
 
-								wrapNodeName !== importName &&
+								if (wrapNodeName !== importName) {
 									replaceNode.replaceWith(
 										t.callExpression(t.identifier(actualImport), [replaceNode.node])
 									)
+									return true
+								}
+								return false
 							}
 
 							// make sure to run BEFORE any wrap that will replace the arrowFunction node
 							let hasChildren = false
 							if (!state.opts.memoWithChildren) {
 								if (arrowFunction.node.params[0] && t.isObjectPattern(arrowFunction.node.params[0])) {
-									let param = arrowFunction.node.params[0]
-									hasChildren = param.properties.some((property) => {
+									let param = arrowFunction.get('params')[0] as NodePath<t.ObjectPattern>
+									let paramNode = param.node
+
+									hasChildren = paramNode.properties.some((property) => {
 										if (t.isObjectProperty(property)) {
 											return t.isIdentifier(property.key) && property.key.name === 'children'
 										}
 										return false
 									})
 									if (hasChildren) {
-										log.componentsWithChildren++
+										log.foundComponentsWithChildren++
 									}
 								}
 							}
@@ -170,15 +174,17 @@ const componentVisitor: PluginObj<Options> = {
 									arrowFunction.traverse(observableGetterSeeker.visitor, state)
 								}
 								if (!state.opts.wrapObserverOnlyIfGet || state.hasObservableGetter) {
-									wrap(state.opts.componentWrappers.observer, 'inner')
-									log.observerWraps++
+									if (wrap(state.opts.componentWrappers.observer, 'inner')) {
+										log.observerWraps++
+									}
 								}
 							}
 
 							// The outer most wrap with memo
 							if (state.opts?.componentWrappers?.memo && !hasChildren) {
-								wrap(state.opts.componentWrappers.memo, 'outer')
-								log.memoWraps++
+								if (wrap(state.opts.componentWrappers.memo, 'outer')) {
+									log.memoWraps++
+								}
 							}
 
 							if (!wrapNodeName) {
