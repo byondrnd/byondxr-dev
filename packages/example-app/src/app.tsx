@@ -1,5 +1,4 @@
-// import _Canvas, { Canvas } from '@react-three/fiber'
-import { forwardRef, memo, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRecoilLocalAtom, useRecoilEffect } from '@byondxr/recoil-utils'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -61,18 +60,18 @@ const App = () => {
 
 export default App
 
-export const BBB = forwardRef(() => {
-	return <ambientLight />
-})
-BBB.displayName = 'BBB'
+// export const BBB = forwardRef(() => {
+// 	return <ambientLight />
+// })
+// BBB.displayName = 'BBB'
 
-export const CCC = memo(() => {
-	return <Canvas>aaa</Canvas>
-})
-CCC.displayName = 'BBB'
+// export const CCC = memo(() => {
+// 	return <Canvas>aaa</Canvas>
+// })
+// CCC.displayName = 'BBB'
 
-export const DDD = memo(() => {
-	// @ts-ignore
-	return <_Canvas>aaa</_Canvas>
-})
-DDD.displayName = 'BBB'
+// export const DDD = memo(() => {
+// 	// @ts-ignore
+// 	return <_Canvas>aaa</_Canvas>
+// })
+// DDD.displayName = 'BBB'
