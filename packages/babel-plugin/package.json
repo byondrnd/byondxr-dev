@@ -1,6 +1,6 @@
 {
 	"name": "@byondxr/babel-plugin",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"exports": {
 		".": {
 			"default": "./dist/index.js"
