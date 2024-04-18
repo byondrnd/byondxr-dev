@@ -6,3 +6,4 @@ dist
 coverage
 *.backup
 temp
+**/*.log
