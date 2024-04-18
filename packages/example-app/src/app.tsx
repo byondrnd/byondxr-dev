@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, memo, useEffect, useState } from 'react'
 import { useRecoilLocalAtom, useRecoilEffect } from '@byondxr/recoil-utils'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -64,3 +64,8 @@ export const BBB = forwardRef(() => {
 	return null
 })
 BBB.displayName = 'BBB'
+
+export const CCC = memo(() => {
+	return null
+})
+CCC.displayName = 'BBB'

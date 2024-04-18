@@ -84,11 +84,11 @@ const componentVisitor: PluginObj<Options> = {
 			if (declarator) {
 				const init = declarator.get('init')
 				let arrowFunction: NodePath<t.ArrowFunctionExpression> | undefined = undefined
-				let wrapped = false
+				let wrapNodeName: string | undefined = undefined
 				if (init.isArrowFunctionExpression()) {
 					arrowFunction = init
 				} else if (init.isCallExpression()) {
-					wrapped = true
+					wrapNodeName = t.isIdentifier(init.node.callee) ? init.node.callee.name : undefined
 					const param = init.get('arguments')[0]
 					if (param && param.isArrowFunctionExpression()) {
 						arrowFunction = param
@@ -112,9 +112,10 @@ const componentVisitor: PluginObj<Options> = {
 									replaceNode = init as NodePath<t.CallExpression>
 								}
 
-								replaceNode.replaceWith(
-									t.callExpression(t.identifier(actualImport), [replaceNode.node])
-								)
+								wrapNodeName !== importName &&
+									replaceNode.replaceWith(
+										t.callExpression(t.identifier(actualImport), [replaceNode.node])
+									)
 							}
 
 							// make sure to run BEFORE any wrap that will replace the arrowFunction node
@@ -151,7 +152,7 @@ const componentVisitor: PluginObj<Options> = {
 								log.memoWraps++
 							}
 
-							if (!wrapped) {
+							if (!wrapNodeName) {
 								p.insertAfter(
 									t.expressionStatement(
 										t.assignmentExpression(
@@ -214,7 +215,7 @@ const plugin = (): PluginObj<Options> => {
 					writeLog()
 				}
 			}
-			// console.log(file.path.toString().replaceAll('\t', '  '))
+			console.log(file.path.toString().replaceAll('\t', '  '))
 		},
 	}
 }
