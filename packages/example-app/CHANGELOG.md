@@ -1,5 +1,11 @@
 # example-app
 
+## 0.0.7
+
+### Patch Changes
+
+- c5b8531: .
+
 ## 0.0.6
 
 ### Patch Changes
