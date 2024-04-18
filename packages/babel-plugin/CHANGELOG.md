@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.5
+
+### Patch Changes
+
+- 2e02ea4: babel more features
+
 ## 0.0.4
 
 ### Patch Changes
