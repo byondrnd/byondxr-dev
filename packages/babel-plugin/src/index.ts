@@ -73,7 +73,7 @@ const jsxVisitor: PluginObj<Options> = {
 				if (existingAttribute) {
 					existingAttribute.value = t.stringLiteral(state.componentName)
 				} else {
-					p.node.attributes.push(
+					p.node.attributes.unshift(
 						t.jsxAttribute(t.jsxIdentifier('data-component'), t.stringLiteral(state.componentName))
 					)
 				}
@@ -240,14 +240,10 @@ const plugin = (): PluginObj<Options> => {
 					filesEnteredMap.set(file.opts.filename, true)
 					clearTimeout(tm)
 					tm = setTimeout(() => {
-						console.log('babel finished because of timeout')
+						console.log('babel finished')
 						logFinished = true
 						writeLog()
 					}, 5000)
-				} else {
-					console.warn('babel finished because of entering the same file twice')
-					logFinished = true
-					writeLog()
 				}
 			}
 			// console.log(file.path.toString().replaceAll('\t', '  '))
