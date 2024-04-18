@@ -2,6 +2,7 @@ import { writeFileSync } from 'fs'
 import { addNamed } from '@babel/helper-module-imports'
 import * as t from '@babel/types'
 import type { NodePath, PluginObj, PluginPass } from '@babel/core'
+import { dataComponentExcludes, dataComponentImportSourceExcludesRegex } from './data-component-excludes'
 
 type Import = {
 	importName: string
@@ -26,6 +27,10 @@ export const isComponent = (str: string) => {
 	return /^[A-Z]/.test(str)
 }
 
+export const isDomElement = (str: string) => {
+	return /^[a-z]/.test(str)
+}
+
 const filesEnteredMap = new Map<string, boolean>()
 const log = {
 	dataComponentWrites: 0,
@@ -37,18 +42,42 @@ const log = {
 const jsxVisitor: PluginObj<Options> = {
 	visitor: {
 		JSXOpeningElement(p, state) {
-			const existingAttribute = p.node.attributes
-				.filter((attr): attr is t.JSXAttribute => t.isJSXAttribute(attr))
-				.find((attr) => t.isJSXAttribute(attr) && attr.name.name === 'data-component')
+			let disregard = false
+			if (t.isJSXIdentifier(p.node.name)) {
+				const elementName = p.node.name.name
 
-			log.dataComponentWrites++
+				if (isDomElement(elementName) && dataComponentExcludes.includes(elementName)) {
+					disregard = true
+				}
 
-			if (existingAttribute) {
-				existingAttribute.value = t.stringLiteral(state.componentName)
-			} else {
-				p.node.attributes.push(
-					t.jsxAttribute(t.jsxIdentifier('data-component'), t.stringLiteral(state.componentName))
-				)
+				console.log({ elementName: elementName }, isDomElement(elementName))
+				if (!isDomElement(elementName)) {
+					let importSpecifier = p.scope.getBinding(elementName)?.path
+					if (importSpecifier?.isImportSpecifier() || importSpecifier?.isImportDefaultSpecifier()) {
+						const importDeclaration = importSpecifier.parentPath
+						if (importDeclaration?.isImportDeclaration()) {
+							const importSource = importDeclaration.node.source.value
+							if (RegExp(dataComponentImportSourceExcludesRegex).test(importSource)) {
+								disregard = true
+							}
+						}
+					}
+				}
+			}
+			if (!disregard) {
+				const existingAttribute = p.node.attributes
+					.filter((attr): attr is t.JSXAttribute => t.isJSXAttribute(attr))
+					.find((attr) => t.isJSXAttribute(attr) && attr.name.name === 'data-component')
+
+				log.dataComponentWrites++
+
+				if (existingAttribute) {
+					existingAttribute.value = t.stringLiteral(state.componentName)
+				} else {
+					p.node.attributes.push(
+						t.jsxAttribute(t.jsxIdentifier('data-component'), t.stringLiteral(state.componentName))
+					)
+				}
 			}
 
 			p.stop()
@@ -215,7 +244,7 @@ const plugin = (): PluginObj<Options> => {
 					writeLog()
 				}
 			}
-			console.log(file.path.toString().replaceAll('\t', '  '))
+			// console.log(file.path.toString().replaceAll('\t', '  '))
 		},
 	}
 }
