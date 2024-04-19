@@ -270,7 +270,7 @@ const plugin = (): PluginObj<Options> => {
 					}, 10000)
 				}
 			}
-			console.log(file.path.toString().replaceAll('\t', '  '))
+			// console.log(file.path.toString().replaceAll('\t', '  '))
 		},
 	}
 }
