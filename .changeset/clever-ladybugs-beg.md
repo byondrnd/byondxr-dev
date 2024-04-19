@@ -1,5 +1,0 @@
----
-"@byondxr/babel-plugin": patch
----
-
-.

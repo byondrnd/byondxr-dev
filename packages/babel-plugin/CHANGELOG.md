@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.12
+
+### Patch Changes
+
+- 70740d7: .
+
 ## 0.0.11
 
 ### Patch Changes
