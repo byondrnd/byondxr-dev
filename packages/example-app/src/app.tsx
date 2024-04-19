@@ -1,44 +1,59 @@
-import { useEffect, useState } from 'react'
-import { useRecoilLocalAtom, useRecoilEffect } from '@byondxr/recoil-utils'
+import type { Ref } from 'react'
+import { useState, forwardRef } from 'react'
+import { useRecoilLocalAtom } from '@byondxr/recoil-utils'
+import { observable } from '@legendapp/state'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './app.css'
+
+const o$ = observable({ a: 1 })
+setInterval(() => {
+	o$.set({ a: o$.get().a + 1 })
+}, 1000)
+type Props = { children: string }
+export const A = forwardRef(({ children }: Props, ref: Ref<HTMLDivElement>) => {
+	console.log(o$.get())
+	return null
+})
+
+A.displayName = 'A'
 
 const App = () => {
 	const [count, setCount] = useState(0)
 
 	const [vAtom, setVAtom] = useRecoilLocalAtom('', 'app:App:vAtom')
 
-	useEffect(() => {
-		console.log('useEffect')
-		let tm = setTimeout(() => {
-			console.log('setVAtom(v + 1)')
-			setVAtom((v) => v + 2)
-			setTimeout(() => {
-				console.log('setVAtom(v + 2)')
-				setVAtom((v) => v + 2)
-			}, 5000)
-		}, 5000)
-		return () => {
-			clearTimeout(tm)
-		}
-	}, [])
+	// useEffect(() => {
+	// 	console.log('useEffect')
+	// 	let tm = setTimeout(() => {
+	// 		console.log('setVAtom(v + 1)')
+	// 		setVAtom((v) => v + 2)
+	// 		setTimeout(() => {
+	// 			console.log('setVAtom(v + 2)')
+	// 			setVAtom((v) => v + 2)
+	// 		}, 5000)
+	// 	}, 5000)
+	// 	return () => {
+	// 		clearTimeout(tm)
+	// 	}
+	// }, [])
 
-	useRecoilEffect(
-		async ({ getAsync }) => {
-			const v = await getAsync(vAtom)
-			console.log('v', v)
-		},
-		[vAtom],
-		({ get }) => {
-			const v = get(vAtom)
-		},
-		'app:App:-'
-	)
+	// useRecoilEffect(
+	// 	async ({ getAsync }) => {
+	// 		const v = await getAsync(vAtom)
+	// 		console.log('v', v)
+	// 	},
+	// 	[vAtom],
+	// 	({ get }) => {
+	// 		const v = get(vAtom)
+	// 	},
+	// 	'app:App:-'
+	// )
 
 	return (
 		<>
 			<div data-component="aaaaaa">
+				<A>a</A>
 				<a href="https://vitejs.dev" target="_blank" rel="noreferrer">
 					<img src={viteLogo} className="logo" alt="Vite logo" />
 				</a>

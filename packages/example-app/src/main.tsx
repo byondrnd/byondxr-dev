@@ -4,9 +4,6 @@ import { RecoilRoot } from 'recoil'
 import App from './app'
 import './index.css'
 
-type Props = { children: string }
-export const A = ({ children }: Props) => {}
-
 // type HtmlProps = any
 // export const HtmlComponent = (
 // 	{ children, style, className, renderFirst, ...props }: HtmlProps,
