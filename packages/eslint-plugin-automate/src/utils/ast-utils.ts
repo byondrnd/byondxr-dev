@@ -95,12 +95,16 @@ export const isNodeTypeIncludesObjectOrArray = (context: Context, node: TSESTree
 	return recursivefindIsObjectType(nodeType)
 }
 
+export const isHookIdentifier = (str: string): boolean => {
+	return /^use[0-9A-Z$_]/.test(str)
+}
+
 type ComponentName = { componentName?: string; hookName?: string }
 export const getReactComponentName = (node: TSESTree.BindingName | null): ComponentName | undefined => {
 	if (node?.type === AST_NODE_TYPES.Identifier) {
 		if (/^[A-Z]/.test(node.name)) {
 			return { componentName: node.name }
-		} else if (/^use[0-9A-Z_$]/.test(node.name)) {
+		} else if (isHookIdentifier(node.name)) {
 			return { hookName: node.name }
 		}
 	}
@@ -334,10 +338,6 @@ const walkUpTillTopmostReturn = (node: TSESTree.Node): TSESTree.ReturnStatement 
 		return walkUpTillTopmostReturn(node.parent)
 	}
 	return undefined
-}
-
-export const isHookIdentifier = (str: string): boolean => {
-	return /^use[0-9A-Z]/.test(str)
 }
 
 export const checkHookCall = (node: TSESTree.Node) => {
