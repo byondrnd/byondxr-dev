@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.13
+
+### Patch Changes
+
+- 5eb7458: fix eslint hook name syntax
+
 ## 0.0.12
 
 ### Patch Changes
