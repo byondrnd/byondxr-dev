@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.14
+
+### Patch Changes
+
+- c3dbad6: babel nested components
+
 ## 0.0.13
 
 ### Patch Changes
