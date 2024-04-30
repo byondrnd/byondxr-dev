@@ -1,5 +1,11 @@
 # example-app
 
+## 0.0.9
+
+### Patch Changes
+
+- c3dbad6: babel nested components
+
 ## 0.0.8
 
 ### Patch Changes
