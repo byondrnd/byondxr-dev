@@ -75,10 +75,12 @@ const App = () => {
 
 export default App
 
-// export const BBB = forwardRef(() => {
-// 	return <ambientLight />
-// })
-// BBB.displayName = 'BBB'
+export const BBB = () => {
+	const A = () => {
+		return <div></div>
+	}
+	return <A />
+}
 
 // export const CCC = memo(() => {
 // 	return <Canvas>aaa</Canvas>

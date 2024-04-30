@@ -233,7 +233,6 @@ const componentVisitor: PluginObj<Options> = {
 					}
 				}
 			}
-			p.skip()
 		},
 	},
 }
