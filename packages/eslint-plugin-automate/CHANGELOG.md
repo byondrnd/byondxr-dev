@@ -1,5 +1,11 @@
 # @byondxr/eslint-plugin-automate
 
+## 0.1.13
+
+### Patch Changes
+
+- 229006d: fix eslint hook name syntax
+
 ## 0.1.12
 
 ### Patch Changes
