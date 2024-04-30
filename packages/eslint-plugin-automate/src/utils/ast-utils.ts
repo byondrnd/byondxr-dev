@@ -60,7 +60,8 @@ export const isNodeTypeIncludesNullOrUndefined = (context: Context, node: TSESTr
 export const isNodeTypeFunction = (nodeType: ts.Type) => {
 	const regular =
 		nodeType.getFlags() === ts.TypeFlags.Object &&
-		(nodeType.getSymbol()?.members?.get(ts.InternalSymbolName.Call) !== undefined || nodeType.getSymbol()?.escapedName === ts.InternalSymbolName.Function)
+		(nodeType.getSymbol()?.members?.get(ts.InternalSymbolName.Call) !== undefined ||
+			nodeType.getSymbol()?.escapedName === ts.InternalSymbolName.Function)
 
 	return nodeType.getFlags() === ts.TypeFlags.Object && (regular || nodeType.getCallSignatures()[0])
 }
@@ -99,7 +100,7 @@ export const getReactComponentName = (node: TSESTree.BindingName | null): Compon
 	if (node?.type === AST_NODE_TYPES.Identifier) {
 		if (/^[A-Z]/.test(node.name)) {
 			return { componentName: node.name }
-		} else if (/^use[0-9A-Z]/.test(node.name)) {
+		} else if (/^use[0-9A-Z_$]/.test(node.name)) {
 			return { hookName: node.name }
 		}
 	}
@@ -109,26 +110,34 @@ export const getReactComponentName = (node: TSESTree.BindingName | null): Compon
 /**
  * @param fn - function to call for each react component
  */
-export const targetReactComponent = (fn: (node: TSESTree.BlockStatement, componentName: ComponentName | undefined) => void) => {
+export const targetReactComponent = (
+	fn: (node: TSESTree.BlockStatement, componentName: ComponentName | undefined) => void
+) => {
 	return {
-		'Program > VariableDeclaration > VariableDeclarator, Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator': (node: TSESTree.VariableDeclarator) => {
-			let init = node.init
-			if (init?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-				let name = getReactComponentName(node.id)
-				if (name && init.body.type === AST_NODE_TYPES.BlockStatement) {
-					fn(init.body, name)
-				}
-			} else if (init?.type === AST_NODE_TYPES.CallExpression) {
-				let insideFunction = init.arguments?.[0]
-				if (insideFunction?.type === AST_NODE_TYPES.ArrowFunctionExpression || insideFunction?.type === AST_NODE_TYPES.FunctionExpression) {
+		'Program > VariableDeclaration > VariableDeclarator, Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator':
+			(node: TSESTree.VariableDeclarator) => {
+				let init = node.init
+				if (init?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
 					let name = getReactComponentName(node.id)
-					if (name && insideFunction.body?.type === AST_NODE_TYPES.BlockStatement) {
-						fn(insideFunction.body, name)
+					if (name && init.body.type === AST_NODE_TYPES.BlockStatement) {
+						fn(init.body, name)
+					}
+				} else if (init?.type === AST_NODE_TYPES.CallExpression) {
+					let insideFunction = init.arguments?.[0]
+					if (
+						insideFunction?.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+						insideFunction?.type === AST_NODE_TYPES.FunctionExpression
+					) {
+						let name = getReactComponentName(node.id)
+						if (name && insideFunction.body?.type === AST_NODE_TYPES.BlockStatement) {
+							fn(insideFunction.body, name)
+						}
 					}
 				}
-			}
-		},
-		'Program > FunctionDeclaration, Program > ExportNamedDeclaration > FunctionDeclaration': (node: TSESTree.FunctionDeclaration) => {
+			},
+		'Program > FunctionDeclaration, Program > ExportNamedDeclaration > FunctionDeclaration': (
+			node: TSESTree.FunctionDeclaration
+		) => {
 			let name = getReactComponentName(node.id)
 			if (name && node.body.type === AST_NODE_TYPES.BlockStatement) {
 				fn(node.body, name)
@@ -164,7 +173,10 @@ export const isSimpleSVGComponent = (node: TSESTree.BlockStatement) => {
 	return false
 }
 
-export const walkUpTillReactComponentOrHook = (node: TSESTree.Node, blockStatement?: TSESTree.BlockStatement): TSESTree.BlockStatement | undefined => {
+export const walkUpTillReactComponentOrHook = (
+	node: TSESTree.Node,
+	blockStatement?: TSESTree.BlockStatement
+): TSESTree.BlockStatement | undefined => {
 	if (node.type === AST_NODE_TYPES.VariableDeclaration) {
 		const declarator = node.declarations[0]
 		if (declarator?.type === AST_NODE_TYPES.VariableDeclarator) {
@@ -182,7 +194,10 @@ export const walkUpTillReactComponentOrHook = (node: TSESTree.Node, blockStateme
 	return undefined
 }
 
-export const walkUpTillNodeType = <T extends (typeof AST_NODE_TYPES)[keyof typeof AST_NODE_TYPES], N extends Extract<TSESTree.Node, { type: T }>>(
+export const walkUpTillNodeType = <
+	T extends (typeof AST_NODE_TYPES)[keyof typeof AST_NODE_TYPES],
+	N extends Extract<TSESTree.Node, { type: T }>,
+>(
 	node: TSESTree.Node,
 	targetNodeType: T
 ): N | undefined => {
@@ -195,7 +210,10 @@ export const walkUpTillNodeType = <T extends (typeof AST_NODE_TYPES)[keyof typeo
 	return undefined
 }
 
-export const getReactScopeVariables = (context: Context, node: TSESTree.Node): TSESLint.Scope.Variable[] | undefined => {
+export const getReactScopeVariables = (
+	context: Context,
+	node: TSESTree.Node
+): TSESLint.Scope.Variable[] | undefined => {
 	let baseBlockNode = walkUpTillReactComponentOrHook(node)
 	let baseArrowNode = baseBlockNode?.parent
 	if (baseArrowNode?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
@@ -250,7 +268,10 @@ export const walkUpTillNextComponentLevelRange = (
 	return undefined
 }
 
-export const getWrappingHook = <const T extends { [index in string]: index }>(node: TSESTree.ExpressionStatement, hooks: T) => {
+export const getWrappingHook = <const T extends { [index in string]: index }>(
+	node: TSESTree.ExpressionStatement,
+	hooks: T
+) => {
 	let wrappingHookName: keyof typeof hooks | undefined
 	let variableDeclaratorName = ''
 	let hookCallNode = walkUpTillNodeType(node, AST_NODE_TYPES.CallExpression)
@@ -282,8 +303,14 @@ export const walkUpTillKeyAttribute = (context: Context, node: TSESTree.Node): s
 		jsxOpeningElement = node.openingElement
 	}
 	if (jsxOpeningElement) {
-		const keyAttribute = jsxOpeningElement.attributes.find((attribute) => attribute.type === AST_NODE_TYPES.JSXAttribute && attribute.name.name === 'key')
-		if (keyAttribute && keyAttribute.type === AST_NODE_TYPES.JSXAttribute && keyAttribute.value?.type === AST_NODE_TYPES.JSXExpressionContainer) {
+		const keyAttribute = jsxOpeningElement.attributes.find(
+			(attribute) => attribute.type === AST_NODE_TYPES.JSXAttribute && attribute.name.name === 'key'
+		)
+		if (
+			keyAttribute &&
+			keyAttribute.type === AST_NODE_TYPES.JSXAttribute &&
+			keyAttribute.value?.type === AST_NODE_TYPES.JSXExpressionContainer
+		) {
 			return context.getSourceCode().getText(keyAttribute.value.expression)
 		}
 	}
@@ -400,7 +427,10 @@ export const getHostFunctionScopeName = (context: Context, node: TSESTree.Node) 
 	return { _name, arrowFnNode }
 }
 
-export const getDepReferences = (context: Context, node: TSESTree.ArrowFunctionExpression): TSESLint.Scope.Reference[] => {
+export const getDepReferences = (
+	context: Context,
+	node: TSESTree.ArrowFunctionExpression
+): TSESLint.Scope.Reference[] => {
 	const scopeManager = context.getSourceCode().scopeManager
 
 	if (scopeManager) {
