@@ -286,6 +286,9 @@ export default plugin
  * eslint not to allow usage of .get() inside hook
  * eslint use .get() only on observer$ direct
  *
+ * auto convert useMemo or useEffect to regular ones
+ * auto add useHandler and the callback wrappers
+ *
  * convert useMemo => useComputed().get() with additive imports in parallel to checking for get()
  */
 
