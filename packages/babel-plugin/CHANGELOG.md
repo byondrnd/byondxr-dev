@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.15
+
+### Patch Changes
+
+- 739f909: enable components to begin with \_ or $ or numbers
+
 ## 0.0.14
 
 ### Patch Changes
