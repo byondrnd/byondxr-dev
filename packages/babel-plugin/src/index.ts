@@ -25,7 +25,7 @@ export type Options = PluginPass & {
 }
 
 export const isComponent = (str: string) => {
-	return /^[A-Z]/.test(str)
+	return /^[\$_\d]*[A-Z]/.test(str)
 }
 
 export const isDomElement = (str: string) => {
@@ -227,7 +227,7 @@ const componentVisitor: PluginObj<Options> = {
 							}
 
 							if (state.opts.dataComponent) {
-								arrowFunction.traverse(jsxVisitor.visitor, { ...state, componentName })
+								// arrowFunction.traverse(jsxVisitor.visitor, { ...state, componentName })
 							}
 						}
 					}
