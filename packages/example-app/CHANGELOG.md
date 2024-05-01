@@ -1,5 +1,11 @@
 # example-app
 
+## 0.0.10
+
+### Patch Changes
+
+- 739f909: enable components to begin with \_ or $ or numbers
+
 ## 0.0.9
 
 ### Patch Changes
