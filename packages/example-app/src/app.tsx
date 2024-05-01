@@ -75,7 +75,7 @@ const App = () => {
 
 export default App
 
-export const BBB = () => {
+const _BBB = () => {
 	const A = () => {
 		return <div></div>
 	}
