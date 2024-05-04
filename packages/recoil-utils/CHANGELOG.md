@@ -1,5 +1,12 @@
 # @byondxr/recoil-utils
 
+## 0.1.14
+
+### Patch Changes
+
+- Updated dependencies [cd2a4bd]
+  - @byondxr/react-utils@0.1.8
+
 ## 0.1.13
 
 ### Patch Changes
