@@ -1,4 +1,4 @@
-import { useCallback, memo as reactMemo, useRef } from 'react'
+import { useCallback, memo as reactMemo, useRef, useState } from 'react'
 import type { Dict, EmptyDict } from '@byondxr/utils'
 import type { DependencyList, FunctionComponent, Key, NamedExoticComponent, ReactNode } from 'react'
 
@@ -13,12 +13,9 @@ const _useCallback = useCallback
 export const useHandler: UseHandler = <T extends Function>(callback: T): T => {
 	const callbackRef = useRef(callback)
 	callbackRef.current = callback
-	// useUnmount(() => {
-	// 	// making sure that whoever used that function will not keep it in scope in order to clean memory (for recoil selector)
-	// 	callbackRef.current = (() => {}) as any
-	// })
-
-	return _useCallback((...args: any[]) => callbackRef.current(...args), []) as unknown as T
+	return useState(() => {
+		return ((...args: any[]) => callbackRef.current(...args)) as unknown as T
+	})[0]
 }
 
 type UseInlineHandler = () => {
