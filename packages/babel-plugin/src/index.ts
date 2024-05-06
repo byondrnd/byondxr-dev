@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs'
 import { addNamed } from '@babel/helper-module-imports'
 import * as t from '@babel/types'
-import type { NodePath, PluginObj, PluginPass } from '@babel/core'
+import type { BabelFile, NodePath, PluginObj, PluginPass } from '@babel/core'
 import { dataComponentExcludes, dataComponentImportSourceExcludesRegex } from './data-component-excludes'
 
 type Import = {
@@ -244,20 +244,32 @@ const writeLog = () => {
 	console.warn(stringified)
 	writeFileSync('byondxr-babel-plugin.log', stringified)
 }
+const filterFiles = (file: BabelFile) => {
+	return /\.tsx$/.test(file.opts.filename || '')
+}
 const plugin = (): PluginObj<Options> => {
 	return {
 		name: 'byondxr-babel-plugin',
-		pre() {
+		pre(file) {
+			if (!filterFiles(file)) {
+				return
+			}
 			this.actualImports = new Map()
 		},
 		visitor: {
 			Program: {
 				enter(p, state) {
+					if (!filterFiles(state.file)) {
+						return
+					}
 					p.traverse<Options>(componentVisitor.visitor, state)
 				},
 			},
 		},
 		post(file) {
+			if (!filterFiles(file)) {
+				return
+			}
 			if (!logFinished && file.opts.filename) {
 				if (!filesEnteredMap.get(file.opts.filename)) {
 					filesEnteredMap.set(file.opts.filename, true)
