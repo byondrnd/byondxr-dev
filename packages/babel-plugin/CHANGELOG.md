@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.16
+
+### Patch Changes
+
+- b40ae89: babel plugin lmit to tsx
+
 ## 0.0.15
 
 ### Patch Changes
