@@ -1,5 +1,12 @@
 # @byondxr/babel-plugin
 
+## 0.0.17
+
+### Patch Changes
+
+- ade9693: babel add back data component
+- 82f83a1: babel-back-the-adding-datacomponent
+
 ## 0.0.16
 
 ### Patch Changes
