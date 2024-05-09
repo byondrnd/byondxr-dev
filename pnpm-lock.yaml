@@ -87,6 +87,9 @@ importers:
         specifier: ^0.34.6
         version: 0.34.6(jsdom@23.2.0)
     devDependencies:
+      '@changesets/changelog-git':
+        specifier: ^0.2.0
+        version: 0.2.0
       '@changesets/cli':
         specifier: ^2.27.1
         version: 2.27.1
