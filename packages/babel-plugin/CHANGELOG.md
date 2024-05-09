@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.18
+
+### Patch Changes
+
+- 83325ca: remove log files
+
 ## 0.0.17
 
 ### Patch Changes
