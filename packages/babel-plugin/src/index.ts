@@ -227,7 +227,7 @@ const componentVisitor: PluginObj<Options> = {
 							}
 
 							if (state.opts.dataComponent) {
-								// arrowFunction.traverse(jsxVisitor.visitor, { ...state, componentName })
+								arrowFunction.traverse(jsxVisitor.visitor, { ...state, componentName })
 							}
 						}
 					}
@@ -281,7 +281,7 @@ const plugin = (): PluginObj<Options> => {
 					}, 10000)
 				}
 			}
-			// console.log(file.path.toString().replaceAll('\t', '  '))
+			console.log(file.path.toString().replaceAll('\t', '  '))
 		},
 	}
 }
