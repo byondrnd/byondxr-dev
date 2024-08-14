@@ -15,6 +15,7 @@ export type Options = PluginPass & {
 			memo?: Import
 		}
 		useComputed?: Import
+		debug?: boolean
 		memoWithChildren?: boolean
 		wrapObserverOnlyIfGet?: boolean
 		dataComponent?: boolean
@@ -134,10 +135,93 @@ const useMemoVisitor: PluginObj<Options> = {
 	},
 }
 
+const debugComponentTraverse = (p: NodePath, state: Options, component: string) => {
+	if (!state.opts.debug) {
+		return
+	}
+	const DETECT_STRING = 'component'
+	const REPLACE_COMMENT = 'used'
+	p.traverse({
+		enter(p) {
+			let innerComment = p.node.innerComments?.filter(
+				(c) => c.type === 'CommentBlock' && c.value.trim() === DETECT_STRING
+			)[0]
+			if (innerComment) {
+				if (p.isCallExpression()) {
+					p.node.arguments.push(t.stringLiteral(component))
+					innerComment.value = REPLACE_COMMENT
+				}
+			} else {
+				let trailingComment = p.node.trailingComments?.filter(
+					(c) => c.type === 'CommentBlock' && c.value.trim() === DETECT_STRING
+				)[0]
+				if (trailingComment) {
+					if (p.parentPath?.isCallExpression()) {
+						p.parentPath.node.arguments.push(t.stringLiteral(component))
+						trailingComment.value = REPLACE_COMMENT
+					}
+				}
+			}
+		},
+	})
+}
+
 // wrap max 0-1 wrapped components
 const componentVisitor: PluginObj<Options> = {
 	visitor: {
 		VariableDeclaration(p, state) {
+			// p.replaceWithSourceString(p.getSource())
+			// let comments = state.file.ast.comments
+
+			// console.log({ comments: state.file.ast.comments })
+			// if (comments) {
+			// 	comments.forEach((comment) => {
+			// 		if (comment.type === 'CommentBlock') {
+			// 			if (comment.value.trim() === 'yyy') {
+			// 				comment.value = 'xxx'
+			// 				if (comment.end && comment.start) {
+			// 					comment.end = comment.start + 2
+			// 				}
+			// 				console.log('----------------------', {
+			// 					'comment.end': comment.end,
+			// 					'comment.start': comment.start,
+			// 					'comment.loc': comment.loc,
+			// 				})
+			// 				if (comment.loc) {
+			// 					// comment.loc.start.column = comment.loc.start.column + 5
+			// 					// comment.loc.start.line = comment.loc.start.line +5
+			// 					comment.loc.end.column = 70
+			// 					// comment.loc.end.line = comment.loc.start.line
+			// 				}
+			// 			}
+			// 		}
+			// 	})
+			// }
+
+			// if (state.file.ast.comments) {
+			// 	state.file.ast.comments = state.file.ast.comments.map((comment: any) => {
+			// 		if (comment.type === 'CommentBlock') {
+			// 			console.log({ comment: comment })
+			// 			if (comment.value.trim() === 'yyy') {
+			// 				return {
+			// 					type: 'CommentBlock',
+			// 					value: 'xxx',
+			// 					start: comment.start,
+			// 					end: comment.start + 5, // 'xxx' + '/*' + '*/'
+			// 					loc: {
+			// 						start: comment.loc.start,
+			// 						end: {
+			// 							line: comment.loc.start.line,
+			// 							column: comment.loc.start.column + 5,
+			// 						},
+			// 					},
+			// 				}
+			// 			}
+			// 		}
+			// 		return comment
+			// 	})
+			// }
+
 			const declarations = p.get('declarations')
 			const declarator = declarations[0]
 			if (declarator) {
@@ -158,6 +242,7 @@ const componentVisitor: PluginObj<Options> = {
 					if (t.isIdentifier(declarator.node.id)) {
 						if (isComponent(declarator.node.id.name)) {
 							const componentName = declarator.node.id.name
+							debugComponentTraverse(arrowFunction, state, componentName)
 							const wrap = ({ importName, importSource }: Import) => {
 								let actualImport = state.actualImports.get(importName)
 								if (!actualImport) {
@@ -270,6 +355,7 @@ const plugin = (): PluginObj<Options> => {
 			if (!filterFiles(file)) {
 				return
 			}
+
 			if (!logFinished && file.opts.filename) {
 				if (!filesEnteredMap.get(file.opts.filename)) {
 					filesEnteredMap.set(file.opts.filename, true)

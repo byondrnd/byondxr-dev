@@ -14,7 +14,8 @@ export default defineConfig({
 							componentWrappers: {
 								memo: { importName: 'memo', importSource: '@byondxr/react-utils' },
 								observer: { importName: 'observer', importSource: '@legendapp/state/react' },
-							},
+                            },
+                            debug: true,
 							memoWithChildren: false,
 							dataComponent: true,
 							wrapObserverOnlyIfGet: false,
