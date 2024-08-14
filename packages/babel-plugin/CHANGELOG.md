@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.20
+
+### Patch Changes
+
+- 8e4742a: babel debug include hooks
+
 ## 0.0.19
 
 ### Patch Changes
