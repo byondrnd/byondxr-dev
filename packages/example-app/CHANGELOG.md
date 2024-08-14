@@ -1,5 +1,11 @@
 # example-app
 
+## 0.0.13
+
+### Patch Changes
+
+- 8e4742a: babel debug include hooks
+
 ## 0.0.12
 
 ### Patch Changes
