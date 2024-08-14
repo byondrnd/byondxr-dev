@@ -18,10 +18,14 @@ export const A = forwardRef(({ children }: Props, ref: Ref<HTMLDivElement>) => {
 
 A.displayName = 'A'
 
+const useTest = (p?: any) => {}
+
 const App = () => {
 	const [count, setCount] = useState(0)
 
 	const [vAtom, setVAtom] = useRecoilLocalAtom('', 'app:App:vAtom')
+	useTest(/*component*/)
+	useTest('' /*component*/)
 
 	// useEffect(() => {
 	// 	console.log('useEffect')
