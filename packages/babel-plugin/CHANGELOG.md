@@ -1,5 +1,11 @@
 # @byondxr/babel-plugin
 
+## 0.0.19
+
+### Patch Changes
+
+- db78c3b: add babel debug mode component arg
+
 ## 0.0.18
 
 ### Patch Changes

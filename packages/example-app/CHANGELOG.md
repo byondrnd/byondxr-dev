@@ -1,5 +1,11 @@
 # example-app
 
+## 0.0.12
+
+### Patch Changes
+
+- db78c3b: add babel debug mode component arg
+
 ## 0.0.11
 
 ### Patch Changes
