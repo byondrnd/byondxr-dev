@@ -20,6 +20,10 @@ A.displayName = 'A'
 
 const useTest = (p?: any) => {}
 
+const useA = () => {
+	useTest(/*component*/)
+	useTest('' /*component*/)
+}
 const App = () => {
 	const [count, setCount] = useState(0)
 

@@ -28,6 +28,9 @@ export type Options = PluginPass & {
 export const isComponent = (str: string) => {
 	return /^[\$_\d]*[A-Z]/.test(str)
 }
+export const isHookName = (str: string): boolean => {
+	return /^use[0-9A-Z$_]/.test(str)
+}
 
 export const isDomElement = (str: string) => {
 	return /^[a-z]/.test(str)
@@ -149,6 +152,7 @@ const debugComponentTraverse = (p: NodePath, state: Options, component: string) 
 			if (innerComment) {
 				if (p.isCallExpression()) {
 					p.node.arguments.push(t.stringLiteral(component))
+					p.node.arguments.push(t.stringLiteral(state.filename?.replace(`${state.cwd}/`, '') ?? ''))
 					innerComment.value = REPLACE_COMMENT
 				}
 			} else {
@@ -158,6 +162,9 @@ const debugComponentTraverse = (p: NodePath, state: Options, component: string) 
 				if (trailingComment) {
 					if (p.parentPath?.isCallExpression()) {
 						p.parentPath.node.arguments.push(t.stringLiteral(component))
+						p.parentPath.node.arguments.push(
+							t.stringLiteral(state.filename?.replace(`${state.cwd}/`, '') ?? '')
+						)
 						trailingComment.value = REPLACE_COMMENT
 					}
 				}
@@ -240,9 +247,14 @@ const componentVisitor: PluginObj<Options> = {
 
 				if (arrowFunction) {
 					if (t.isIdentifier(declarator.node.id)) {
-						if (isComponent(declarator.node.id.name)) {
+						if (isHookName(declarator.node.id.name)) {
+							const hookName = declarator.node.id.name
+							debugComponentTraverse(arrowFunction, state, hookName)
+						} else if (isComponent(declarator.node.id.name)) {
 							const componentName = declarator.node.id.name
+
 							debugComponentTraverse(arrowFunction, state, componentName)
+
 							const wrap = ({ importName, importSource }: Import) => {
 								let actualImport = state.actualImports.get(importName)
 								if (!actualImport) {
