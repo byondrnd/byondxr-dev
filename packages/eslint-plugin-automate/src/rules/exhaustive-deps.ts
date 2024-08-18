@@ -443,34 +443,34 @@ const rule = createESLintRule<Options, MessageIds>({
 					const dependencyNode = getDependency(referenceNode, isHookIncludeAllDeps)
 					const dependency = analyzePropertyChain(dependencyNode, optionalChains)
 
-					// CHANGE V3 TODO
-					let _node = dependencyNode
-					let currentLine = _node.loc.start.line
-					let prevLineText = context.getSourceCode().getLines()[currentLine - 2]
-					if (
-						dependencyNode.type === 'MemberExpression' &&
-						dependencyNode.property.type === 'Identifier' &&
-						dependencyNode.property.name === 'current'
-					) {
-						const existingComment = prevLineText?.includes(LINT_COMMENT_PREFIX) ? prevLineText : ''
-						const newFlag = `${_node.object.name}.${_node.property.name} - ${SELECTOR_LOCAL_REF_DEPENDECY_COMMENT}`
-						const newComment = getUpdatedLintComment(newFlag, existingComment)
-						if (!prevLineText?.includes(newFlag)) {
-							context.report({
-								node: _node,
-								messageId:
-									'will be noted as local dependency causing a selector to not be cached globally',
-								fix(fixer) {
-									return prevLineText.includes(LINT_COMMENT_PREFIX)
-										? fixer.replaceTextRange(getPrevLineRange(context, _node), `${newComment}`)
-										: fixer.insertTextBeforeRange(
-												getCurrentLineRange(context, _node),
-												`${newComment}\n`
-										  )
-								},
-							})
-						}
-					}
+					// // CHANGE V3 TODO
+					// let _node = dependencyNode
+					// let currentLine = _node.loc.start.line
+					// let prevLineText = context.getSourceCode().getLines()[currentLine - 2]
+					// if (
+					// 	dependencyNode.type === 'MemberExpression' &&
+					// 	dependencyNode.property.type === 'Identifier' &&
+					// 	dependencyNode.property.name === 'current'
+					// ) {
+					// 	const existingComment = prevLineText?.includes(LINT_COMMENT_PREFIX) ? prevLineText : ''
+					// 	const newFlag = `${_node.object.name}.${_node.property.name} - ${SELECTOR_LOCAL_REF_DEPENDECY_COMMENT}`
+					// 	const newComment = getUpdatedLintComment(newFlag, existingComment)
+					// 	if (!prevLineText?.includes(newFlag)) {
+					// 		context.report({
+					// 			node: _node,
+					// 			messageId:
+					// 				'will be noted as local dependency causing a selector to not be cached globally',
+					// 			fix(fixer) {
+					// 				return prevLineText.includes(LINT_COMMENT_PREFIX)
+					// 					? fixer.replaceTextRange(getPrevLineRange(context, _node), `${newComment}`)
+					// 					: fixer.insertTextBeforeRange(
+					// 							getCurrentLineRange(context, _node),
+					// 							`${newComment}\n`
+					// 						)
+					// 			},
+					// 		})
+					// 	}
+					// }
 					// else if (prevLineText?.includes('ref dependency')) {
 					// 	context.report({
 					// 		node: _node,
@@ -1355,7 +1355,7 @@ function collectRecommendations({
 						isNodeTypeIncludesFunction(context, value.references[0].identifier)
 					)
 				),
-		  ]
+			]
 		: [_dependencies, new Map()]
 
 	if (isHookIncludeAllDeps && functionDeps.size > 0) {
@@ -1381,7 +1381,7 @@ function collectRecommendations({
 									: fixer.insertTextBeforeRange(
 											getCurrentLineRange(context, _node),
 											`${newComment}\n`
-									  )
+										)
 							},
 						})
 					}

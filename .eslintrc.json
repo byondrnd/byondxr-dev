@@ -5,14 +5,7 @@
 		"node": true,
 		"browser": true
 	},
-	"plugins": [
-		"unused-imports",
-		"@typescript-eslint",
-		"prefer-arrow-functions",
-		"import",
-		"react-refresh",
-		"jsx-a11y"
-	],
+	"plugins": ["unused-imports", "@typescript-eslint", "import", "react-refresh", "jsx-a11y"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaFeatures": {
@@ -58,6 +51,7 @@
 		},
 		{
 			"files": ["*.ts", "*.tsx"],
+			"plugins": ["prefer-arrow-functions"],
 			"rules": {
 				"import/order": [
 					"error",
