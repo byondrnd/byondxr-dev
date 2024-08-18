@@ -8,9 +8,6 @@ import {
 	getPrevLineRange,
 	getUpdatedLintComment,
 	isNodeTypeIncludesFunction,
-	LINT_COMMENT_PREFIX,
-	SELECTOR_LOCAL_FUNCTION_DEPENDECY_COMMENT,
-	SELECTOR_LOCAL_REF_DEPENDECY_COMMENT,
 } from '../utils/ast-utils'
 // CHANGE V1
 
@@ -1358,46 +1355,46 @@ function collectRecommendations({
 			]
 		: [_dependencies, new Map()]
 
-	if (isHookIncludeAllDeps && functionDeps.size > 0) {
-		Array.from(_dependencies)
-			.filter(([key, value]) => isNodeTypeIncludesFunction(context, value.references[0].identifier))
-			.forEach(([key, value]) => {
-				// CHANGE V3
+	// if (isHookIncludeAllDeps && functionDeps.size > 0) {
+	// 	Array.from(_dependencies)
+	// 		.filter(([key, value]) => isNodeTypeIncludesFunction(context, value.references[0].identifier))
+	// 		.forEach(([key, value]) => {
+	// 			// CHANGE V3
 
-				let _node = value.references[0].identifier
-				if (!_node.name.endsWith('__global')) {
-					let currentLine = _node.loc.start.line
-					let prevLineText = context.getSourceCode().getLines()[currentLine - 2]
-					const existingComment = prevLineText?.includes(LINT_COMMENT_PREFIX) ? prevLineText : ''
-					const newFlag = `${_node.name} - ${SELECTOR_LOCAL_FUNCTION_DEPENDECY_COMMENT}`
-					const newComment = getUpdatedLintComment(newFlag, existingComment)
-					if (!prevLineText?.includes(newFlag)) {
-						context.report({
-							node: _node,
-							messageId: 'will be noted as local dependency causing a selector to not be cached globally',
-							fix(fixer) {
-								return prevLineText.includes(LINT_COMMENT_PREFIX)
-									? fixer.replaceTextRange(getPrevLineRange(context, _node), `${newComment}`)
-									: fixer.insertTextBeforeRange(
-											getCurrentLineRange(context, _node),
-											`${newComment}\n`
-										)
-							},
-						})
-					}
-				}
-				// else if (prevLineText?.includes('function dependency')) {
-				// 	console.log('2')
-				// 	context.report({
-				// 		node: _node,
-				// 		messageId: 'will be noted as local dependency causing a selector to not be cached globally',
-				// 		fix(fixer) {
-				// 			return fixer.removeRange(getPrevLineRange(context, _node))
-				// 		},
-				// 	})
-				// }
-			})
-	}
+	// 			// let _node = value.references[0].identifier
+	// 			// if (!_node.name.endsWith('__global')) {
+	// 			// 	let currentLine = _node.loc.start.line
+	// 			// 	let prevLineText = context.getSourceCode().getLines()[currentLine - 2]
+	// 			// 	const existingComment = prevLineText?.includes(LINT_COMMENT_PREFIX) ? prevLineText : ''
+	// 			// 	const newFlag = `${_node.name} - ${SELECTOR_LOCAL_FUNCTION_DEPENDECY_COMMENT}`
+	// 			// 	const newComment = getUpdatedLintComment(newFlag, existingComment)
+	// 			// 	if (!prevLineText?.includes(newFlag)) {
+	// 			// 		context.report({
+	// 			// 			node: _node,
+	// 			// 			messageId: 'will be noted as local dependency causing a selector to not be cached globally',
+	// 			// 			fix(fixer) {
+	// 			// 				return prevLineText.includes(LINT_COMMENT_PREFIX)
+	// 			// 					? fixer.replaceTextRange(getPrevLineRange(context, _node), `${newComment}`)
+	// 			// 					: fixer.insertTextBeforeRange(
+	// 			// 							getCurrentLineRange(context, _node),
+	// 			// 							`${newComment}\n`
+	// 			// 						)
+	// 			// 			},
+	// 			// 		})
+	// 			// 	}
+	// 			// }
+	// 			// else if (prevLineText?.includes('function dependency')) {
+	// 			// 	console.log('2')
+	// 			// 	context.report({
+	// 			// 		node: _node,
+	// 			// 		messageId: 'will be noted as local dependency causing a selector to not be cached globally',
+	// 			// 		fix(fixer) {
+	// 			// 			return fixer.removeRange(getPrevLineRange(context, _node))
+	// 			// 		},
+	// 			// 	})
+	// 			// }
+	// 		})
+	// }
 
 	// console.log({
 	// 	realfndep: functionDeps.get('realfn')?.references?.[0],
