@@ -1,6 +1,6 @@
 {
 	"name": "@byondxr/eslint-plugin-automate",
-	"version": "0.1.13",
+	"version": "0.1.14",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",

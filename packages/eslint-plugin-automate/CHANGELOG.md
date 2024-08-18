@@ -1,5 +1,11 @@
 # @byondxr/eslint-plugin-automate
 
+## 0.1.14
+
+### Patch Changes
+
+- 0eb0f07: LINT_COMMENT_PREFIX
+
 ## 0.1.13
 
 ### Patch Changes
