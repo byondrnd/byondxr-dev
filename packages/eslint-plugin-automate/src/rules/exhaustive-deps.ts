@@ -4,9 +4,9 @@
 
 import { ESLintUtils } from '@typescript-eslint/utils'
 import {
-	getCurrentLineRange,
-	getPrevLineRange,
-	getUpdatedLintComment,
+	// getCurrentLineRange,
+	// getPrevLineRange,
+	// getUpdatedLintComment,
 	isNodeTypeIncludesFunction,
 } from '../utils/ast-utils'
 // CHANGE V1
